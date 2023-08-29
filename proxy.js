@@ -18,16 +18,20 @@ async function scrapePage(website, results) {
     const hrefValues = await page.$$eval(linkSelector, elements => elements.map(element => element.getAttribute('href')))
 
     const data = await Promise.all(elements.map(async (element, index) => {
-      const title = await element.evaluate(el => el.textContent);
+      let title = await element.evaluate(el => el.textContent);
       let description = await descriptions[index].evaluate(el => el.textContent)
       let hrefValue = hrefValues[index]
       let opportunityLink = mainLink + hrefValue
 
-      if (description.trim() === '') {
+      if (title === '') {
+        title = 'No title available'
+      }
+
+      if (description === '') {
         description = 'No description available'
       }
 
-      if (opportunityLink.trim() === '') {
+      if (opportunityLink === '') {
         description = 'No link available'
       }
 
