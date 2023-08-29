@@ -1,6 +1,5 @@
-
-const puppeteer = require('puppeteer')
 require('dotenv').config()
+const puppeteer = require('puppeteer')
 
 async function scrapePage(website, results) {
   const { url, source, titleSelector, descriptionSelector, linkSelector, mainLink } = website
@@ -42,7 +41,7 @@ async function scrapePage(website, results) {
 
     results.push(...data)
 
-    await browser.disconnect()
+    await browser.close()
   } catch (error) {
     console.error(`Error scraping page ${url}:`, error)
     throw error
