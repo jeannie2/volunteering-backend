@@ -60,9 +60,35 @@ async function scrapePage(website, results) {
 }
 
 async function startScraping() {
-  // Rest of your code...
+  const websites = [
+    {
+      url: 'https://timeauction.org/en/projects?q%5Bby_skill_categories%5D%5B%5D=52&q%5Bby_skill_categories%5D%5B%5D=48&q%5Bby_volunteer_position_or_details_or_location%5D=&page=1',
+      source: 'Time Auction',
+      titleSelector: 'h5.project-card_content-title',
+      descriptionSelector: 'p.project-card_hover-preview-org',
+      linkSelector: 'a[href^="/en/project/"]',
+      mainLink: 'https://www.timeauction.org',
+    },
+    // {
+    //   url: 'https://www.catchafire.org/volunteer/software-it?order=recent&page=1&slug=software-it&page=1',
+    //   source: 'Catchafire',
+    //   titleSelector: 'h4.ids--type-display-small.caf-my-3',
+    //   descriptionSelector: 'h6.ids--type-caption.ids--color-type-base-text-subdued.truncate-2',
+    //   linkSelector: 'a.caf-card-listing-container',
+    //   mainLink: 'https://www.catchafire.org',
+    // },
+    {
+      url: 'https://www.taprootplus.org/opportunities?utf8=%E2%9C%93&search%5Bkeyword%5D=&search%5Bscope%5D=all&search%5Btype%5D=all&search%5Bsort_by%5D=recent&search%5Bcategories%5D%5B%5D=20&page=1',
+      source: 'Taproot Foundation',
+      titleSelector: 'h4.opportunity-content__title',
+      descriptionSelector: 'h3.opportunity-content__organization',
+      linkSelector: 'a.opportunity-content',
+      mainLink: 'https://www.taprootplus.org',
+    }
+  ]
 
-  // Retry the scraping process for each website
+  const results = []
+
   await Promise.all(websites.map(website => scrapePage(website, results)))
 
   return results
