@@ -6,10 +6,8 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-let puppeteer
-
 app.get('/', (req, res) => {
-  res.send('Hello, this is the backend server!')
+  res.send('This is the backend server')
 });
 
 app.get('/proxy-endpoint', async (req, res) => {
