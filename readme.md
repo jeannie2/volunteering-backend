@@ -1,10 +1,10 @@
 # Volunteering opportunities for web developers
 
-A simple web scraping project using data from various volunteering platforms
+A simple web scraping project that combines data from various volunteering platforms
 
 ## Technologies
 
-This project was made using Puppeteer, Express, Node, jQuery
+This project was made using Puppeteer, Express, Node, jQuery, Browserless
 
 ## How to use
 
