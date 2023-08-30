@@ -5,58 +5,51 @@ async function scrapePage(website, results) {
   const { url, source, titleSelector, descriptionSelector, linkSelector, mainLink } = website
   console.log(url, source, titleSelector, descriptionSelector, linkSelector, mainLink)
 
-  const maxRetries = 3; // Maximum number of retries
-  let retryCount = 0; // Retry counter
+  try {
+    const browser = await puppeteer.connect({ browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BROWSERLESS_TOKEN}` })
 
-  while (retryCount < maxRetries) {
-    try {
-      const browser = await puppeteer.connect({ browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BROWSERLESS_TOKEN}` })
-      const page = await browser.newPage()
-      await page.goto(url)
+    const page = await browser.newPage()
+    await page.goto(url)
 
-      await page.waitForSelector(linkSelector, { timeout: 120000 })
+    await page.waitForSelector(linkSelector, { timeout: 180000 })
 
-      const elements = await page.$(titleSelector)
-      const descriptions = await page.$(descriptionSelector)
-      const hrefValues = await page.$eval(linkSelector, elements => elements.map(element => element.getAttribute('href')))
+    const elements = await page.$$(titleSelector)
+    const descriptions = await page.$$(descriptionSelector)
+    const hrefValues = await page.$$eval(linkSelector, elements => elements.map(element => element.getAttribute('href')))
 
-      const data = await Promise.all(elements.map(async (element, index) => {
-        let title = await element.evaluate(el => el.textContent);
-        let description = await descriptions[index].evaluate(el => el.textContent)
-        let hrefValue = hrefValues[index]
-        let opportunityLink = mainLink + hrefValue
+    const data = await Promise.all(elements.map(async (element, index) => {
+      let title = await element.evaluate(el => el.textContent);
+      let description = await descriptions[index].evaluate(el => el.textContent)
+      let hrefValue = hrefValues[index]
+      let opportunityLink = mainLink + hrefValue
 
-        if (title === '') {
-          title = 'No title available'
-        }
+      if (title === '') {
+        title = 'No title available'
+      }
 
-        if (description === '') {
-          description = 'No description available'
-        }
+      if (description === '') {
+        description = 'No description available'
+      }
 
-        if (opportunityLink === '') {
-          description = 'No link available'
-        }
+      if (opportunityLink === '') {
+        description = 'No link available'
+      }
 
-        console.log('Title: ', title)
-        console.log('Description:', description)
-        console.log('hrefValue: ', hrefValue)
-        console.log('opportunityLink :', opportunityLink)
+      console.log('Title: ', title)
+      console.log('Description:', description)
+      console.log('hrefValue: ', hrefValue)
+      console.log('opportunityLink :', opportunityLink)
 
-        return { url, source, title, description, opportunityLink }
-      }))
+      return { url, source, title, description, opportunityLink }
+    }))
 
-      results.push(...data)
+    results.push(...data)
 
-      await browser.close()
-      return; // Exit the function if successful
-    } catch (error) {
-      console.error(`Error scraping page ${url}:`, error)
-      retryCount++; // Increment the retry counter
-    }
+    await browser.close()
+  } catch (error) {
+    console.error(`Error scraping page ${url}:`, error)
+    throw error
   }
-
-  console.error(`Failed to scrape page ${url} after ${maxRetries} retries`);
 }
 
 async function startScraping() {
