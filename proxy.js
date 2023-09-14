@@ -1,5 +1,5 @@
-// require('dotenv').config()
-// const puppeteer = require('puppeteer')
+require('dotenv').config()
+const puppeteer = require('puppeteer')
 
 // async function scrapePage(website, results, refreshInterval) {
 //   const { url, source, titleSelector, descriptionSelector, linkSelector, mainLink } = website
