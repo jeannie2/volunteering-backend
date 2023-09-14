@@ -82,11 +82,10 @@ async function startScraping() {
 
   if (results.length === 0) {
     console.log('No data found. Refreshing in the next interval...');
+    setTimeout(startScraping, 5000); // Refresh after 5 seconds
   } else {
-    console.log('Scraping completed. Refreshing in the next interval...');
+    console.log('Scraping completed. No further refresh needed.');
   }
-
-  setTimeout(startScraping, 5000); // Refresh after 5 seconds
 
   return results;
 }
