@@ -1,7 +1,7 @@
 require('dotenv').config()
 const puppeteer = require('puppeteer')
 
-async function scrapePageWithRefresh(website, results, refreshInterval) {
+async function scrapePage(website, results, refreshInterval) {
   const { url, source, titleSelector, descriptionSelector, linkSelector, mainLink } = website
   console.log(url, source, titleSelector, descriptionSelector, linkSelector, mainLink)
 
@@ -66,7 +66,7 @@ async function scrapePageWithRefresh(website, results, refreshInterval) {
   fetchData()
 }
 
-async function startScrapingWithRefresh() {
+async function startScraping() {
   const websites = [
     {
       url: 'https://timeauction.org/en/projects?q%5Bby_skill_categories%5D%5B%5D=52&q%5Bby_skill_categories%5D%5B%5D=48&q%5Bby_volunteer_position_or_details_or_location%5D=&page=1',
@@ -96,12 +96,12 @@ async function startScrapingWithRefresh() {
 
   const results = []
 
-  await Promise.all(websites.map(website => scrapePageWithRefresh(website, results, 5000)))
+  await Promise.all(websites.map(website => scrapePage(website, results, 5000)))
 
   return results
 }
 
-module.exports = { startScrapingWithRefresh }
+module.exports = { startScraping }
 
 
 // async function scrapePage(website, results) {
