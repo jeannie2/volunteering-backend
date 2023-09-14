@@ -86,8 +86,6 @@ async function startScraping() {
   } else {
     console.log('Scraping completed. No further refresh needed.');
   }
-
-  return results;
 }
 
 // Call the startScraping function initially
