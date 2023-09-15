@@ -1,108 +1,108 @@
-require('dotenv').config();
-const puppeteer = require('puppeteer');
+// require('dotenv').config();
+// const puppeteer = require('puppeteer');
 
-async function scrapePage(website, results) {
-  const { url, source, titleSelector, descriptionSelector, linkSelector, mainLink } = website;
-  console.log(url, source, titleSelector, descriptionSelector, linkSelector, mainLink);
+// async function scrapePage(website, results) {
+//   const { url, source, titleSelector, descriptionSelector, linkSelector, mainLink } = website;
+//   console.log(url, source, titleSelector, descriptionSelector, linkSelector, mainLink);
 
-  try {
-    const browser = await puppeteer.connect({ browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BROWSERLESS_TOKEN}` });
+//   try {
+//     const browser = await puppeteer.connect({ browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BROWSERLESS_TOKEN}` });
 
-    const page = await browser.newPage();
-    await page.goto(url);
+//     const page = await browser.newPage();
+//     await page.goto(url);
 
-    try {
-      await page.waitForSelector(linkSelector, { timeout: 10000 });
+//     try {
+//       await page.waitForSelector(linkSelector, { timeout: 10000 });
 
-      const elements = await page.$$(titleSelector);
-      const descriptions = await page.$$(descriptionSelector);
-      const hrefValues = await page.$$eval(linkSelector, (elements) => elements.map((element) => element.getAttribute('href')));
+//       const elements = await page.$$(titleSelector);
+//       const descriptions = await page.$$(descriptionSelector);
+//       const hrefValues = await page.$$eval(linkSelector, (elements) => elements.map((element) => element.getAttribute('href')));
 
-      const data = await Promise.all(
-        elements.map(async (element, index) => {
-          let title = await element.evaluate((el) => el.textContent);
-          let description = await descriptions[index].evaluate((el) => el.textContent);
-          let hrefValue = hrefValues[index];
-          let opportunityLink = mainLink + hrefValue;
+//       const data = await Promise.all(
+//         elements.map(async (element, index) => {
+//           let title = await element.evaluate((el) => el.textContent);
+//           let description = await descriptions[index].evaluate((el) => el.textContent);
+//           let hrefValue = hrefValues[index];
+//           let opportunityLink = mainLink + hrefValue;
 
-          if (title === '') {
-            title = 'No title available';
-          }
+//           if (title === '') {
+//             title = 'No title available';
+//           }
 
-          if (description === '') {
-            description = 'No description available';
-          }
+//           if (description === '') {
+//             description = 'No description available';
+//           }
 
-          if (opportunityLink === '') {
-            description = 'No link available';
-          }
+//           if (opportunityLink === '') {
+//             description = 'No link available';
+//           }
 
-          console.log('Title: ', title);
-          console.log('Description:', description);
-          console.log('hrefValue: ', hrefValue);
-          console.log('opportunityLink:', opportunityLink);
+//           console.log('Title: ', title);
+//           console.log('Description:', description);
+//           console.log('hrefValue: ', hrefValue);
+//           console.log('opportunityLink:', opportunityLink);
 
-          return { url, source, title, description, opportunityLink };
-        })
-      );
+//           return { url, source, title, description, opportunityLink };
+//         })
+//       );
 
-      results.push(...data);
-    } catch (error) {
-      console.error(`Error scraping page ${url}:`, error);
-      throw error;
-    }
+//       results.push(...data);
+//     } catch (error) {
+//       console.error(`Error scraping page ${url}:`, error);
+//       throw error;
+//     }
 
-    await browser.close();
-  } catch (error) {
-    console.error(`Error launching browser:`, error);
-    throw error;
-  }
-}
+//     await browser.close();
+//   } catch (error) {
+//     console.error(`Error launching browser:`, error);
+//     throw error;
+//   }
+// }
 
-async function startScraping() {
-  const websites = [
-    {
-      url: 'https://timeauction.org/en/projects?q%5Bby_skill_categories%5D%5B%5D=52&q%5Bby_skill_categories%5D%5B%5D=48&q%5Bby_volunteer_position_or_details_or_location%5D=&page=1',
-      source: 'Time Auction',
-      titleSelector: 'h5.project-card_content-title',
-      descriptionSelector: 'p.project-card_hover-preview-org',
-      linkSelector: 'a[href^="/en/project/"]',
-      mainLink: 'https://www.timeauction.org',
-    },
-    {
-      url: 'https://www.taprootplus.org/opportunities?utf8=%E2%9C%93&search%5Bkeyword%5D=&search%5Bscope%5D=all&search%5Btype%5D=all&search%5Bsort_by%5D=recent&search%5Bcategories%5D%5B%5D=20&page=1',
-      source: 'Taproot Foundation',
-      titleSelector: 'h4.opportunity-content__title',
-      descriptionSelector: 'h3.opportunity-content__organization',
-      linkSelector: 'a.opportunity-content',
-      mainLink: 'https://www.taprootplus.org',
-    },
-  ];
+// async function startScraping() {
+//   const websites = [
+//     {
+//       url: 'https://timeauction.org/en/projects?q%5Bby_skill_categories%5D%5B%5D=52&q%5Bby_skill_categories%5D%5B%5D=48&q%5Bby_volunteer_position_or_details_or_location%5D=&page=1',
+//       source: 'Time Auction',
+//       titleSelector: 'h5.project-card_content-title',
+//       descriptionSelector: 'p.project-card_hover-preview-org',
+//       linkSelector: 'a[href^="/en/project/"]',
+//       mainLink: 'https://www.timeauction.org',
+//     },
+//     {
+//       url: 'https://www.taprootplus.org/opportunities?utf8=%E2%9C%93&search%5Bkeyword%5D=&search%5Bscope%5D=all&search%5Btype%5D=all&search%5Bsort_by%5D=recent&search%5Bcategories%5D%5B%5D=20&page=1',
+//       source: 'Taproot Foundation',
+//       titleSelector: 'h4.opportunity-content__title',
+//       descriptionSelector: 'h3.opportunity-content__organization',
+//       linkSelector: 'a.opportunity-content',
+//       mainLink: 'https://www.taprootplus.org',
+//     },
+//   ];
 
-  const results = [];
+//   const results = [];
 
-  const interval = 5000; // Interval duration in milliseconds
+//   const interval = 5000; // Interval duration in milliseconds
 
-  const intervalId = setInterval(async () => {
-    for (const website of websites) {
-      await scrapePage(website, results);
-    }
+//   const intervalId = setInterval(async () => {
+//     for (const website of websites) {
+//       await scrapePage(website, results);
+//     }
 
-    if (results.length > 0) {
-      clearInterval(intervalId); // Clear the interval if results are received
-      console.log('Scraping completed. No further refresh needed.');
-    } else {
-      console.log('No data found. Refreshing in the next interval...');
-    }
-  }, interval);
-}
+//     if (results.length > 0) {
+//       clearInterval(intervalId); // Clear the interval if results are received
+//       console.log('Scraping completed. No further refresh needed.');
+//     } else {
+//       console.log('No data found. Refreshing in the next interval...');
+//     }
+//   }, interval);
+// }
 
-startScraping();
+// startScraping();
 
-module.exports = { startScraping };
+// module.exports = { startScraping };
 
 
-/*
+
 require('dotenv').config()
 const puppeteer = require('puppeteer')
 
@@ -195,8 +195,6 @@ async function startScraping() {
 }
 
 module.exports = { startScraping }
-
-*/
 
 
 // require('dotenv').config();
