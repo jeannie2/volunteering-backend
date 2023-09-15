@@ -55,7 +55,7 @@ async function waitForSelectorWithRefresh(page, selector, interval) {
   return new Promise((resolve, reject) => {
     const intervalId = setInterval(async () => {
       try {
-        await page.waitForSelector(selector, { timeout: 10000 });
+        await page.waitForSelector(selector, { timeout: 5000 });
         clearInterval(intervalId);
         resolve();
       } catch (error) {
