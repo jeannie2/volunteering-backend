@@ -62,10 +62,21 @@ async function scrapePage(website, results) {
 async function startScraping() {
   const websites = [
     {
-      url: 'https://example.com',
-      // Other website properties
+      url: 'https://timeauction.org/en/projects?q%5Bby_skill_categories%5D%5B%5D=52&q%5Bby_skill_categories%5D%5B%5D=48&q%5Bby_volunteer_position_or_details_or_location%5D=&page=1',
+      source: 'Time Auction',
+      titleSelector: 'h5.project-card_content-title',
+      descriptionSelector: 'p.project-card_hover-preview-org',
+      linkSelector: 'a[href^="/en/project/"]',
+      mainLink: 'https://www.timeauction.org',
     },
-    // Add more websites as needed
+    {
+      url: 'https://www.taprootplus.org/opportunities?utf8=%E2%9C%93&search%5Bkeyword%5D=&search%5Bscope%5D=all&search%5Btype%5D=all&search%5Bsort_by%5D=recent&search%5Bcategories%5D%5B%5D=20&page=1',
+      source: 'Taproot Foundation',
+      titleSelector: 'h4.opportunity-content__title',
+      descriptionSelector: 'h3.opportunity-content__organization',
+      linkSelector: 'a.opportunity-content',
+      mainLink: 'https://www.taprootplus.org',
+    },
   ];
 
   const results = [];
