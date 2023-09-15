@@ -81,14 +81,14 @@ async function startScraping() {
       linkSelector: 'a[href^="/en/project/"]',
       mainLink: 'https://www.timeauction.org',
     },
-    {
-      url: 'https://www.catchafire.org/volunteer/software-it?order=recent&page=1&slug=software-it&page=1',
-      source: 'Catchafire',
-      titleSelector: 'h4.ids--type-display-small.caf-my-3',
-      descriptionSelector: 'h6.ids--type-caption.ids--color-type-base-text-subdued.truncate-2',
-      linkSelector: 'a.caf-card-listing-container',
-      mainLink: 'https://www.catchafire.org',
-    },
+    // {
+    //   url: 'https://www.catchafire.org/volunteer/software-it?order=recent&page=1&slug=software-it&page=1',
+    //   source: 'Catchafire',
+    //   titleSelector: 'h4.ids--type-display-small.caf-my-3',
+    //   descriptionSelector: 'h6.ids--type-caption.ids--color-type-base-text-subdued.truncate-2',
+    //   linkSelector: 'a.caf-card-listing-container',
+    //   mainLink: 'https://www.catchafire.org',
+    // },
     {
       url: 'https://www.taprootplus.org/opportunities?utf8=%E2%9C%93&search%5Bkeyword%5D=&search%5Bscope%5D=all&search%5Btype%5D=all&search%5Bsort_by%5D=recent&search%5Bcategories%5D%5B%5D=20&page=1',
       source: 'Taproot Foundation',
