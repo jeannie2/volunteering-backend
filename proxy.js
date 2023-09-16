@@ -30,7 +30,7 @@ async function scrapePage(website, results) {
     const page = await browser.newPage()
     await page.goto(url)
 
-    await waitForSelectorWithReload(page, linkSelector, { timeout: 10000 });
+    await waitForSelectorWithReload(page, linkSelector, { timeout: 5000 });
 
     const elements = await page.$$(titleSelector);
     const descriptions = await page.$$(descriptionSelector);
